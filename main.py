@@ -1,15 +1,12 @@
-from pawpal_system import Owner, Pet, CareTask, TaskManager, Scheduler
+from datetime import date
+from pawpal_system import Owner, Pet, Task, Scheduler
 
 
 def main():
-    # Create Owner
-    owner = Owner(
-        owner_id=1,
-        name="Apoorva",
-        available_time_per_day=120  # minutes
-    )
+    # Create owner
+    owner = Owner(owner_id=1, name="Apoorva")
 
-    # Create Pets
+    # Create pets
     pet1 = Pet(1, "Buddy", "Dog", "Golden Retriever", 3, 25.0)
     pet2 = Pet(2, "Mittens", "Cat", "Siamese", 2, 8.0)
 
@@ -17,62 +14,54 @@ def main():
     owner.add_pet(pet1)
     owner.add_pet(pet2)
 
-    # Create TaskManager
-    task_manager = TaskManager()
-
-    # Add tasks for pet1 (Dog)
-    task_manager.add_task(CareTask(
+    # Add tasks to pet1
+    pet1.add_task(Task(
         task_id=1,
-        pet_id=1,
         title="Morning Walk",
-        category="Exercise",
+        description="Take Buddy for a walk",
+        scheduled_time="09:00",
         duration=30,
-        priority=3,
-        frequency="Daily",
-        is_required=True
+        frequency="daily",
+        due_date=date.today(),
     ))
 
-    task_manager.add_task(CareTask(
+    pet1.add_task(Task(
         task_id=2,
-        pet_id=1,
         title="Feeding",
-        category="Food",
+        description="Feed Buddy breakfast",
+        scheduled_time="08:00",
         duration=10,
-        priority=5,
-        frequency="Daily",
-        is_required=True
+        frequency="daily",
+        due_date=date.today(),
     ))
 
-    # Add tasks for pet2 (Cat)
-    task_manager.add_task(CareTask(
+    # Add tasks to pet2
+    pet2.add_task(Task(
         task_id=3,
-        pet_id=2,
         title="Playtime",
-        category="Enrichment",
+        description="Play with Mittens",
+        scheduled_time="09:00",
         duration=20,
-        priority=2,
-        frequency="Daily"
+        frequency="daily",
+        due_date=date.today(),
     ))
 
-    task_manager.add_task(CareTask(
+    pet2.add_task(Task(
         task_id=4,
-        pet_id=2,
         title="Grooming",
-        category="Care",
+        description="Brush Mittens",
+        scheduled_time="11:00",
         duration=15,
-        priority=1,
-        frequency="Weekly"
+        frequency="weekly",
+        due_date=date.today(),
     ))
 
-    # Create Scheduler for pet1
-    scheduler = Scheduler(owner, pet1, task_manager)
+    # Create scheduler
+    scheduler = Scheduler(owner)
 
-    # Generate plan
-    plan = scheduler.generate_plan()
-
-    # Print Schedule
+    # Print schedule
     print("\n===== Today's Schedule =====\n")
-    print(plan.generate_summary())
+    print(scheduler.format_schedule_for_terminal())
 
 
 if __name__ == "__main__":
