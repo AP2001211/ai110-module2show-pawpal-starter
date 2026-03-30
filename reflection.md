@@ -3,15 +3,43 @@
 ## 1. System Design
 
 **a. Initial design**
-
+core tasks:
+1. Add / Manage Pet & Owner Info
+2. Create / Edit Care Tasks
+3. Generate & View Daily Plan
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
+- Owner
+    - Stores owner details (name, available time, preferences)
+    - Provides constraints that influence scheduling
+- Pet
+    - Stores pet information (name, species, age, needs)
+    - Helps tailor tasks based on pet requirements
+- CareTask
+    - Represents a single care activity (walk, feed, meds, etc.)
+    - Stores duration, priority, and other task details
+    - Core unit used in scheduling
+- TaskManager
+    - Manages all tasks (add, edit, delete, retrieve)
+    - Keeps task-related logic separate from scheduling
+- Scheduler
+    - Main decision-making component (“brain” of the system)
+    - Uses tasks + constraints to generate a daily plan
+    - Prioritizes tasks and ensures time limits are respected
+- DailyPlan
+    - Stores the final schedule for the day
+    - Contains selected tasks and total duration
+    - May include explanation of decisions
 **b. Design changes**
 
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
-
+- Add completed: bool = False to CareTask
+- Decide one source of truth for available time
+- Avoid storing tasks separately in both TaskManager and Scheduler
+- Add a pet-task link like pet_id
+- Change special_needs from str to a list if you want add/remove methods
 ---
 
 ## 2. Scheduling Logic and Tradeoffs
